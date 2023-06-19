@@ -5,6 +5,12 @@ RUN apt-get install -y nodejs
 
 WORKDIR /src
 
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt-get install git-lfs -y
+RUN git clone https://huggingface.co/TheBloke/airoboros-7B-gpt4-1.2-GGML
+RUN mv airoboros-7B-gpt4-1.2-GGML/airoboros-7b-gpt4-1.2.ggmlv3.q3_K_M.bin ./models/
+RUN rm -rf airoboros-7B-gpt4-1.2-GGML/
+
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
@@ -14,6 +20,7 @@ COPY scripts ./scripts/
 COPY bot_memories ./bot_memories/
 COPY bot_personalities ./bot_personalities/
 COPY .env ./
+
 
 ENV HOST=0.0.0.0
 
